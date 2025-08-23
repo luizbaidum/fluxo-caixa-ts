@@ -1,0 +1,2 @@
+"use strict";
+fetch('http://localhost:8080/routes.php?teste=t');

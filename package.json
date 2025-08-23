@@ -1,0 +1,27 @@
+{
+  "name": "fluxo-caixa-ts",
+  "version": "1.0.0",
+  "description": "Fluxo de caixa simples para planejar e confirmar movimentos bancários.",
+  "homepage": "https://github.com/luizbaidum/fluxo-caixa-ts#readme",
+  "bugs": {
+    "url": "https://github.com/luizbaidum/fluxo-caixa-ts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luizbaidum/fluxo-caixa-ts.git"
+  },
+  "license": "ISC",
+  "author": "luizbaidum",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.12",
+    "tailwindcss": "^4.1.12"
+  },
+  "devDependencies": {
+    "tailwind": "^4.0.0"
+  }
+}
