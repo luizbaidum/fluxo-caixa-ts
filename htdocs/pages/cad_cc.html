@@ -1,0 +1,54 @@
+<div class="bg-white rounded-2xl shadow-xl overflow-hidden w-full max-w-2xl max-h-[90vh] flex flex-col">
+    <form class="p-6 space-y-6 flex-grow flex flex-col">
+        <div class="space-y-6 flex-grow">
+            <div>
+                <label for="bankName" class="block text-sm font-medium text-gray-700 mb-2">Nome do Banco</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <input type="text" id="bankName" class="input-focus pl-10 block w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Ex: Banco do Brasil" required>
+                </div>
+            </div>
+
+            <div>
+                <label for="accountName" class="block text-sm font-medium text-gray-700 mb-2">Nome da Conta</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" id="accountName" class="input-focus pl-10 block w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Ex: Conta Corrente Principal" required>
+                </div>
+            </div>
+
+            <div>
+                <label for="initialBalance" class="block text-sm font-medium text-gray-700 mb-2">Saldo Inicial (opcional)</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" id="initialBalance" class="input-focus pl-10 block w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="R$ 0,00">
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+            <button type="button" class="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-200 flex-1">
+                Cancelar
+            </button>
+            <button type="submit" class="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-sky-500/100 transition-colors duration-200 flex-1 bg-cyan-500">
+                Salvar
+            </button>
+        </div>
+    </form>
+
+    <div class="bg-gray-50 py-4 px-6 text-center text-sm text-gray-500">
+        <p>Preencha os campos obrigatórios para cadastrar uma nova conta corrente</p>
+    </div>
+</div>

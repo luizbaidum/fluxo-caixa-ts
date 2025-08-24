@@ -1,0 +1,46 @@
+<div class="bg-white rounded-2xl shadow-xl overflow-hidden w-full max-w-2xl max-h-[90vh] flex flex-col">
+    <form class="p-6 space-y-6 flex-grow flex flex-col">
+        <div class="space-y-6 flex-grow">
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Descrição</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" id="description" class="input-focus pl-10 block w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Ex: Alimentação, Transporte, Salário" required>
+                </div>
+            </div>
+
+            <div>
+                <label for="signal" class="block text-sm font-medium text-gray-700 mb-2">Sinal</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <select id="signal" class="input-focus pl-10 block w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" required>
+                        <option value="" disabled selected>Selecione o sinal</option>
+                        <option value="+">+ (Entrada/Receita)</option>
+                        <option value="-">- (Saída/Despesa)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+            <button type="button" class="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-200 flex-1">
+                Cancelar
+            </button>
+            <button type="submit" class="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-sky-500/100 transition-colors duration-200 flex-1 bg-cyan-500">
+                Salvar
+            </button>
+        </div>
+    </form>
+
+    <div class="bg-gray-50 py-4 px-6 text-center text-sm text-gray-500">
+        <p>Preencha os campos obrigatórios para cadastrar uma nova categoria</p>
+    </div>
+</div>

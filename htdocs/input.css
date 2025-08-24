@@ -1,1 +1,73 @@
 @import "tailwindcss";
+@import "tailwindcss" layer(base);
+@import "tailwindcss" layer(components);
+@import "tailwindcss" layer(utilities);
+
+@media only screen and (min-width: 768px){
+    .parent:hover .child {
+        opacity:1;
+        height:auto;
+        overflow:none;
+        transform: translateY(0);
+    }
+    .child {
+        opacity:0;
+        height:0;
+        overflow:hidden;
+        transform: translateY(-10%);
+    }
+}
+
+/* Remover margens e preenchimentos padrão */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+/* Estilos personalizados para a tabela */
+.table-cell {
+    border: 1px solid #e5e7eb;
+    padding: 0.5rem;
+}
+
+.table-header {
+    background-color: #3b82f6;
+    color: white;
+    font-weight: bold;
+}
+
+.table-subheader {
+    background-color: #93c5fd;
+    color: #1e3a8a;
+    font-weight: bold;
+}
+
+.row-alternate {
+    background-color: #f9fafb;
+}
+
+.date-cell {
+    background-color: #dbeafe;
+    font-weight: 500;
+}
+
+.empty-cell {
+    background-color: #f3f4f6;
+}
+
+.summary-row {
+    background-color: #e5e7eb;
+    font-weight: bold;
+}
+
+.final-balance {
+    background-color: #3b82f6;
+    color: white;
+    font-weight: bold;
+}
+
+.solicitar-pagina {
+    cursor: pointer;
+}
