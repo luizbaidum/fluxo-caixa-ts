@@ -9,7 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const url_base = window.location.origin;
-let class_require_ajax = document.getElementsByClassName('solicitar-pagina');
+const class_require_ajax = document.getElementsByClassName('solicitar-pagina');
+let formulario = document.querySelector('.submeter-formulario');
+if (!formulario) {
+    console.error('Elemento com classe ".submeter-formulario" não encontrado!');
+}
+else {
+    formulario.addEventListener('click', function (event) {
+    });
+}
 if (class_require_ajax.length == 0) {
     alert('Existe um erro no sistema, por favor entrar em contato com o suporte.');
     console.error('Não existem classes com o nome "solicitar-pagina" para ação.');
@@ -41,4 +49,12 @@ function renderizarPagina(event) {
             console.error(error.message);
         }
     });
+}
+class Cadastrar {
+}
+class Ler {
+}
+class Editar {
+}
+class Deletar {
 }
