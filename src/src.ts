@@ -1,25 +1,14 @@
 const url_base = window.location.origin;
 const class_require_ajax = document.getElementsByClassName('solicitar-pagina') as HTMLCollectionOf<Element>;
 
-
-
-
-
-let formulario = document.querySelector('.submeter-formulario') as HTMLButtonElement;
-if (!formulario) {
-    console.error('Elemento com classe ".submeter-formulario" não encontrado!');
-} else {
-    formulario.addEventListener('click', function(event) {
-    });
+function submeterFormulario() {
+    let form = document.getElementById('form-crud') as HTMLFormElement;
+    let form_data: FormData = new FormData(form);
 }
 
-
-
-
-
 if (class_require_ajax.length == 0) {
-    alert('Existe um erro no sistema, por favor entrar em contato com o suporte.')
-    console.error('Não existem classes com o nome "solicitar-pagina" para ação.')
+    alert('Por favor atualizar a página. Entrar em contato com o suporte se este erro persistir.');
+    console.error('Não existem classes com o nome "solicitar-pagina" para ação.');
 }
 
 for (const span of class_require_ajax) {
@@ -37,7 +26,7 @@ async function renderizarPagina(event: Event) {
             let response = await fetch(url_base + '/pages/' + pagina + '.html');
 
             if (!response.ok) {
-                alert('O sistema encontrou um erro ao carregar a página selecionada.');
+                alert('O sistema encontrou um erro ao carregar a página selecionada. Entrar em contato com o suporte se este erro persistir.');
                 throw new Error(`Response status: ${response.status}`);
             }
 
@@ -47,6 +36,7 @@ async function renderizarPagina(event: Event) {
             window.location.href = url_base;
         }
     } catch (error) {
+        alert('O sistema encontrou um erro ao carregar a página selecionada. Entrar em contato com o suporte se este erro persistir.');
         console.error((error as Error).message);
     }
 }

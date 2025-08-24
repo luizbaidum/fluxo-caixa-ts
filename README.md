@@ -17,6 +17,7 @@ CREATE TABLE contas_correntes (
     idContaCorrente INT AUTO_INCREMENT PRIMARY KEY,
     nomeBanco VARCHAR(100) NOT NULL,
     nomeConta VARCHAR(100) NOT NULL
+    saldoInicial DECIMAL(10,2) NOT NULL DEFAULT
 ) ENGINE=InnoDB;
 
 CREATE TABLE movimentos (
