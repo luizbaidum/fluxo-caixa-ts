@@ -4,12 +4,6 @@ if (empty($_GET['action'])) {
     return json_encode([]);
 }
 
-require '../src/server/api.php';
-
-$routing = new Routing();
-$exec = $routing->func;
-$exec();
-
 class Routing {
     private string $route;
     public string $func;
@@ -33,8 +27,24 @@ class Routing {
             case 'cad_cc':
                 $this->func = 'cadastrarConta';
                 break;
+            case 'cad_mov':
+                $this->func = 'cadastrarMovimento';
+                break;
+            case 'list_mov_m':
+                $this->func = 'listarMovMensal';
+                break;
+            case 'list_s_i':
+                $this->func = 'listarSaldosIniciais';
+                break;
         }
     }
 }
+
+$routing = new Routing();
+$exec = $routing->func;
+
+require '../src/server/api.php';
+
+$exec();
 
 ?>

@@ -1,19 +1,32 @@
 class Formatations {
-    valor: string;
-
-    constructor(value: string) {
-        this.valor = value;
-    }
-
-    convertToUS(): string|void {
+    convertToUS(valor_br: string): string|void {
         try {
-            let br = this.valor;
-            let converting = br.replace(/\./g, '');
-            let us = converting.replace(/,/g, '.');
+            let converting = valor_br.replace(/\./g, '');
+            let iso = converting.replace(/,/g, '.');
 
-            return us;
+            return iso;
         } catch (e) {
             alert('Erro ao converter valor numérico.');
+            console.error('Error -> ' + e);
+        }
+    }
+
+    convertToBR(valor_iso: number): string|void {
+        try {
+            let valor_limpo = Number(valor_iso).toFixed(2).replace(/[^\d.,]/g, '');
+
+            if (!valor_limpo.includes('.')) {
+                return parseInt(valor_limpo).toLocaleString('pt-BR');
+            }
+
+            let valor_numerico = parseFloat(valor_limpo);
+
+            return valor_numerico.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        } catch (e) {
+            alert('Erro ao converter valor para formato brasileiro.');
             console.error('Error -> ' + e);
         }
     }

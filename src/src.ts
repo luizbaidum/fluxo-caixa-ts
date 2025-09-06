@@ -53,8 +53,13 @@ async function submeterFormulario() {
     let form_data: FormData = new FormData(form);
 
     if (form_data.get('saldoInicial')) {
-        let formatacao = new Formatations(form_data.get('saldoInicial') as string);
-        form_data.set('saldoInicial', formatacao.convertToUS() as string);
+        let formatacao = new Formatations();
+        form_data.set('saldoInicial', formatacao.convertToUS(form_data.get('saldoInicial') as string) as string);
+    }
+
+    if (form_data.get('valor')) {
+        let formatacao = new Formatations();
+        form_data.set('valor', formatacao.convertToUS(form_data.get('valor') as string) as string);
     }
 
     try {
@@ -94,31 +99,6 @@ async function solicitarApi(url: string, data?: FormData) {
     }
 }
 
-interface RetornoSolicitacao {
-    status: boolean
-    id: number | string
-}
-
-interface CC {
-    idContaCorrente: number
-    nomeBanco: string
-    nomeConta: string
-}
-
-interface Categoria {
-    idCategoria: number
-    descricao: string
-    sinal: string
-}
-
-interface Movimento {
-    idMovimento: number
-    valor: number
-    data: Date
-    idCategoria: number
-    idContaCorrente: number
-}
-
 class Ler {
     url_leitura: string;
 
@@ -141,6 +121,26 @@ class Ler {
 
         if (ret_json.status) {
             return ret_json.ret as CC[];
+        }
+
+        return [];
+    }
+
+    async listarMovMensal(): Promise<ListaMovimentoMensal> {
+        let ret_json = await solicitarApi(this.url_leitura);
+
+        if (ret_json.status) {
+            return ret_json.ret as ListaMovimentoMensal;
+        }
+
+        return {};
+    }
+
+     async listarSaldoInicial(): Promise<SaldoInicial[]> {
+        let ret_json = await solicitarApi(this.url_leitura);
+
+        if (ret_json.status) {
+            return ret_json.ret as SaldoInicial[];
         }
 
         return [];
@@ -181,4 +181,69 @@ async function criarSelectContas(): Promise<void> {
             local.appendChild(option_element);
         }
     }
+}
+
+async function montarGridIndex(): Promise<void> {
+    let local = document.querySelector('#movimentos-mensais') as HTMLDivElement;
+
+    if (local) {
+        let ler = new Ler('list_mov_m');
+        let mov_m: ListaMovimentoMensal = await ler.listarMovMensal();
+
+        let movimentos_montar = await prepararConteudo(mov_m);
+
+        let table = await gerarTabela('janeiro','2025', movimentos_montar);
+        local.innerHTML = table;
+    }
+}
+
+async function prepararConteudo(original: ListaMovimentoMensal): Promise <ListaMovimentoMensal> {
+    let aux: {[chave: string]: ListaMovimentoMensal[]} = {};
+    let contador: {[chave: string]: number} = {};
+    let controle_id: number = 0;
+    let arr_chave_data: string[] = [];
+
+    return original;
+
+    // for (let chave_data in original) {
+    //     arr_chave_data.push(chave_data);
+    // }
+
+    // let ler: Ler = new Ler('list_cc');
+    // let cc: CC[] = await ler.listarContas();
+    // let id_cc_only: number[] = cc.map(conta => conta.idContaCorrente);
+
+    // console.log(id_cc_only);
+
+    // for (const dia of arr_chave_data) {
+    //     for (const id_cc of id_cc_only) {
+    //         let chave: string = dia + '&&' + id_cc;
+    //         let diferenca: number = 0;
+    //         let objeto_vazio: listaMovimentoMensal = {
+    //                             idMovimento: 0,
+    //                             valor: 0,
+    //                             data: dia,
+    //                             idCategoria: 0,
+    //                             idContaCorrente: id_cc,
+    //                             descCC: '',
+    //                             descCat: ''
+    //                         };
+
+    //         if (aux[chave]) {
+    //             if (aux[chave].length != contador[dia]) {
+    //                 diferenca = contador[dia] - aux[chave].length;
+
+    //                 for (let i = 0; i < diferenca; i++) {
+    //                     aux[chave].push(objeto_vazio);
+    //                 }
+    //             }
+    //         } else {
+    //             aux[chave] = [objeto_vazio];
+    //         }
+    //     }
+    // }
+
+    // return {};
+
+    // return aux;
 }
