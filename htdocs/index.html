@@ -43,7 +43,7 @@
     </div>
 
     <div id="content" class="flex items-center justify-center w-full">
-        <div class="w-full h-full overflow-x-auto bg-white p-4">
+        <div class="w-full h-full overflow-x-auto bg-white p-4" id="movimentos-mensais">
             <table class="w-full border-collapse rounded-lg shadow-sm">
                 <tr>
                     <th colspan="7" class="table-cell table-header text-center text-xl p-3">JANEIRO 2025</th>
@@ -214,7 +214,15 @@
     </div>
 </body>
 
-<script src="src.js"></script>
 <script src="formatting-functions.js"></script>
+<script src="creating-table.js"></script>
+<script src="interfaces.js"></script>
+<script src="src.js"></script>
+
+<script>
+    setTimeout(() => {
+        montarGridIndex()
+    }, 700)
+</script>
 
 </html>

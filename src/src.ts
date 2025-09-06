@@ -53,8 +53,13 @@ async function submeterFormulario() {
     let form_data: FormData = new FormData(form);
 
     if (form_data.get('saldoInicial')) {
-        let formatacao = new Formatations(form_data.get('saldoInicial') as string);
-        form_data.set('saldoInicial', formatacao.convertToUS() as string);
+        let formatacao = new Formatations();
+        form_data.set('saldoInicial', formatacao.convertToUS(form_data.get('saldoInicial') as string) as string);
+    }
+
+    if (form_data.get('valor')) {
+        let formatacao = new Formatations();
+        form_data.set('valor', formatacao.convertToUS(form_data.get('valor') as string) as string);
     }
 
     try {
@@ -94,31 +99,6 @@ async function solicitarApi(url: string, data?: FormData) {
     }
 }
 
-interface RetornoSolicitacao {
-    status: boolean
-    id: number | string
-}
-
-interface CC {
-    idContaCorrente: number
-    nomeBanco: string
-    nomeConta: string
-}
-
-interface Categoria {
-    idCategoria: number
-    descricao: string
-    sinal: string
-}
-
-interface Movimento {
-    idMovimento: number
-    valor: number
-    data: Date
-    idCategoria: number
-    idContaCorrente: number
-}
-
 class Ler {
     url_leitura: string;
 
@@ -141,6 +121,26 @@ class Ler {
 
         if (ret_json.status) {
             return ret_json.ret as CC[];
+        }
+
+        return [];
+    }
+
+    async listarMovMensal(): Promise<listaMovimentoMensal[]> {
+        let ret_json = await solicitarApi(this.url_leitura);
+
+        if (ret_json.status) {
+            return ret_json.ret as listaMovimentoMensal[];
+        }
+
+        return [];
+    }
+
+     async listarSaldoInicial(): Promise<saldoInicial[]> {
+        let ret_json = await solicitarApi(this.url_leitura);
+
+        if (ret_json.status) {
+            return ret_json.ret as saldoInicial[];
         }
 
         return [];
@@ -181,4 +181,79 @@ async function criarSelectContas(): Promise<void> {
             local.appendChild(option_element);
         }
     }
+}
+
+async function montarGridIndex(): Promise<void> {
+    let local = document.querySelector('#movimentos-mensais') as HTMLDivElement;
+
+    if (local) {
+        let ler = new Ler('list_mov_m');
+        let mov_m: listaMovimentoMensal[] = await ler.listarMovMensal();
+
+        let movimentos_montar = await prepararConteudo(mov_m);
+
+        let table = await gerarTabela('janeiro','2025', movimentos_montar);
+        local.innerHTML = table;
+    }
+}
+
+async function prepararConteudo(original: listaMovimentoMensal[]): Promise <{[data: string]: listaMovimentoMensal[]}> {
+    let aux: {[chave: string]: listaMovimentoMensal[]} = {};
+    let contador: {[chave: string]: number} = {};
+    let controle_id: number = 0;
+
+    for (const mov of original) {
+        let chave: string = mov.data + '&&' + mov.idContaCorrente;
+
+        if (!aux[chave]) {
+            aux[chave] = [];
+        }
+
+        if (!contador[mov.data]) {
+            contador[mov.data] = 1;
+        } else {
+            if (controle_id == Number(chave.split('&&')[1])) {
+                contador[mov.data] ++;
+            }
+        }
+
+        controle_id = mov.idContaCorrente;
+
+        aux[chave].push(mov);
+    }
+
+    let ler: Ler = new Ler('list_cc');
+    let cc: CC[] = await ler.listarContas();
+    let id_cc_only: number[] = cc.map(conta => conta.idContaCorrente);
+    let dias_movimento: string[] = Object.keys(aux).map(chave => chave.split('&&')[0]);
+
+    for (const dia of dias_movimento) {
+        for (const id_cc of id_cc_only) {
+            let chave: string = dia + '&&' + id_cc;
+            let diferenca: number = 0;
+            let objeto_vazio: listaMovimentoMensal = {
+                                idMovimento: 0,
+                                valor: 0,
+                                data: dia,
+                                idCategoria: 0,
+                                idContaCorrente: id_cc,
+                                descCC: '',
+                                descCat: ''
+                            };
+
+            if (aux[chave]) {
+                if (aux[chave].length != contador[dia]) {
+                    diferenca = contador[dia] - aux[chave].length;
+
+                    for (let i = 0; i < diferenca; i++) {
+                        aux[chave].push(objeto_vazio);
+                    }
+                }
+            } else {
+                aux[chave] = [objeto_vazio];
+            }
+        }
+    }
+
+    return aux;
 }

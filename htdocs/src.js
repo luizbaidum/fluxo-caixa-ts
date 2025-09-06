@@ -57,8 +57,12 @@ function submeterFormulario() {
         }
         let form_data = new FormData(form);
         if (form_data.get('saldoInicial')) {
-            let formatacao = new Formatations(form_data.get('saldoInicial'));
-            form_data.set('saldoInicial', formatacao.convertToUS());
+            let formatacao = new Formatations();
+            form_data.set('saldoInicial', formatacao.convertToUS(form_data.get('saldoInicial')));
+        }
+        if (form_data.get('valor')) {
+            let formatacao = new Formatations();
+            form_data.set('valor', formatacao.convertToUS(form_data.get('valor')));
         }
         try {
             let resultado = yield solicitarApi(url, form_data);
@@ -117,6 +121,24 @@ class Ler {
             return [];
         });
     }
+    listarMovMensal() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let ret_json = yield solicitarApi(this.url_leitura);
+            if (ret_json.status) {
+                return ret_json.ret;
+            }
+            return [];
+        });
+    }
+    listarSaldoInicial() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let ret_json = yield solicitarApi(this.url_leitura);
+            if (ret_json.status) {
+                return ret_json.ret;
+            }
+            return [];
+        });
+    }
 }
 function criarSelectCategorias() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -146,5 +168,71 @@ function criarSelectContas() {
                 local.appendChild(option_element);
             }
         }
+    });
+}
+function montarGridIndex() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let local = document.querySelector('#movimentos-mensais');
+        if (local) {
+            let ler = new Ler('list_mov_m');
+            let mov_m = yield ler.listarMovMensal();
+            let movimentos_montar = yield prepararConteudo(mov_m);
+            let table = yield gerarTabela('janeiro', '2025', movimentos_montar);
+            local.innerHTML = table;
+        }
+    });
+}
+function prepararConteudo(original) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let aux = {};
+        let contador = {};
+        let controle_id = 0;
+        for (const mov of original) {
+            let chave = mov.data + '&&' + mov.idContaCorrente;
+            if (!aux[chave]) {
+                aux[chave] = [];
+            }
+            if (!contador[mov.data]) {
+                contador[mov.data] = 1;
+            }
+            else {
+                if (controle_id == Number(chave.split('&&')[1])) {
+                    contador[mov.data]++;
+                }
+            }
+            controle_id = mov.idContaCorrente;
+            aux[chave].push(mov);
+        }
+        let ler = new Ler('list_cc');
+        let cc = yield ler.listarContas();
+        let id_cc_only = cc.map(conta => conta.idContaCorrente);
+        let dias_movimento = Object.keys(aux).map(chave => chave.split('&&')[0]);
+        for (const dia of dias_movimento) {
+            for (const id_cc of id_cc_only) {
+                let chave = dia + '&&' + id_cc;
+                let diferenca = 0;
+                let objeto_vazio = {
+                    idMovimento: 0,
+                    valor: 0,
+                    data: dia,
+                    idCategoria: 0,
+                    idContaCorrente: id_cc,
+                    descCC: '',
+                    descCat: ''
+                };
+                if (aux[chave]) {
+                    if (aux[chave].length != contador[dia]) {
+                        diferenca = contador[dia] - aux[chave].length;
+                        for (let i = 0; i < diferenca; i++) {
+                            aux[chave].push(objeto_vazio);
+                        }
+                    }
+                }
+                else {
+                    aux[chave] = [objeto_vazio];
+                }
+            }
+        }
+        return aux;
     });
 }
