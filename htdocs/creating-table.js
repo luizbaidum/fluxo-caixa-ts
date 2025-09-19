@@ -7,45 +7,100 @@ function getValorClass(valor) {
         return 'table-cell empty-cell';
     return valor < 0 ? 'table-cell text-red-600' : 'table-cell';
 }
-async function gerarTabela(mes, ano, movimentos /*{[chave: string]: listaMovimentoMensal[]}*/) {
+async function gerarTabela(mes, ano, movimentos) {
     let table = '';
     let arr_ret_cabecalho = await construirCabecalho(mes, ano);
     let cabecalho = arr_ret_cabecalho[0];
     let contas = arr_ret_cabecalho[1];
     let formatacao = new Formatations();
     table = table + cabecalho + '<tbody>';
-    let teste = [
-        '2025-09-10',
-        '2025-09-11',
-        '2025-09-12',
-        '2025-09-13',
+    // Gerar todos os dias do mês (exemplo para setembro/2025)
+    let todos_dias_mes = [
+        '2025-09-10', '2025-09-11', '2025-09-12', '2025-09-13',
+        // Você pode gerar isso dinamicamente baseado no mês/ano
     ];
-    console.log(contas);
-    console.log(movimentos);
-    teste.forEach(function (dia, i) {
+    todos_dias_mes.forEach(function (dia) {
         if (movimentos[dia]) {
-            table += `<tr class="">
-                        <td class="table-cell date-cell">${dia}</td>`;
+            let linha_extra = '';
+            let hasMultiplasLinhas = false;
+            let movimentosPorConta = [];
+            // Primeiro, verificar se há múltiplos movimentos em alguma conta
             for (let id_cc of contas) {
-                let mov_mesma_cc = movimentos[dia][id_cc];
-                if (mov_mesma_cc) {
-                    if (Object.values(mov_mesma_cc).length > 1) {
-                        let n_linhas = Object.values(mov_mesma_cc).length;
-                        for (let i = 0; i < n_linhas; i++) {
-                        }
+                if (movimentos[dia][id_cc]) {
+                    let n_linhas = Object.keys(movimentos[dia][id_cc]).length;
+                    if (n_linhas > 1) {
+                        hasMultiplasLinhas = true;
                     }
-                    for (let mov of Object.values(mov_mesma_cc)) {
-                        table += `<td class="${getValorClass(mov.valor)}">${mov.valor !== undefined ? formatacao.convertToBR(mov.valor) : ''}</td>
-                            <td class="table-cell">${mov.descCat}</td>`;
-                    }
+                    movimentosPorConta.push(movimentos[dia][id_cc]);
                 }
                 else {
-                    table += `<td>0,00</td>
-                              <td class="table-cell"></td>`;
+                    movimentosPorConta.push(null);
                 }
             }
+            if (hasMultiplasLinhas) {
+                // Encontrar o número máximo de linhas necessárias
+                let maxLinhas = 1;
+                movimentosPorConta.forEach(movs => {
+                    if (movs && Object.keys(movs).length > maxLinhas) {
+                        maxLinhas = Object.keys(movs).length;
+                    }
+                });
+                // Gerar múltiplas linhas
+                for (let linhaIndex = 0; linhaIndex < maxLinhas; linhaIndex++) {
+                    table += `<tr class="${linhaIndex === 0 ? '' : 'extra-row'}">`;
+                    // Data apenas na primeira linha
+                    if (linhaIndex === 0) {
+                        table += `<td class="table-cell date-cell" rowspan="${maxLinhas}">${dia}</td>`;
+                    }
+                    // Para cada conta
+                    for (let i = 0; i < contas.length; i++) {
+                        const movs = movimentosPorConta[i];
+                        if (movs) {
+                            const movKeys = Object.keys(movs);
+                            if (linhaIndex < movKeys.length) {
+                                const mov = movs[movKeys[linhaIndex]];
+                                table += `<td class="table-cell ${getValorClass(mov.valor)}">${mov.valor !== undefined ? formatacao.convertToBR(mov.valor) : ''}</td>`;
+                                table += `<td class="table-cell">${mov.descCat || ''}</td>`;
+                            }
+                            else {
+                                // Linhas vazias para preencher
+                                table += `<td class="table-cell"></td>`;
+                                table += `<td class="table-cell"></td>`;
+                            }
+                        }
+                        else if (linhaIndex === 0) {
+                            // Primeira linha, conta sem movimentos
+                            table += `<td class="table-cell">0,00</td>`;
+                            table += `<td class="table-cell"></td>`;
+                        }
+                        else {
+                            // Linhas extras vazias
+                            table += `<td class="table-cell"></td>`;
+                            table += `<td class="table-cell"></td>`;
+                        }
+                    }
+                    table += `</tr>`;
+                }
+            }
+            else {
+                // Apenas uma linha por dia
+                table += `<tr class="">`;
+                table += `<td class="table-cell date-cell">${dia}</td>`;
+                for (let id_cc of contas) {
+                    if (movimentos[dia][id_cc]) {
+                        const movs = movimentos[dia][id_cc];
+                        const mov = Object.values(movs)[0];
+                        table += `<td class="table-cell ${getValorClass(mov.valor)}">${mov.valor !== undefined ? formatacao.convertToBR(mov.valor) : ''}</td>`;
+                        table += `<td class="table-cell">${mov.descCat || ''}</td>`;
+                    }
+                    else {
+                        table += `<td class="table-cell">0,00</td>`;
+                        table += `<td class="table-cell"></td>`;
+                    }
+                }
+                table += `</tr>`;
+            }
         }
-        table += `</tr>`;
     });
     table += `</tbody></table>`;
     return table;
