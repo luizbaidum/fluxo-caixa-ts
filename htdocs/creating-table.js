@@ -1,7 +1,32 @@
 "use strict";
-const meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO',
-    'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO'];
-const ano = '2025';
+function criarSelects() {
+    criarSelect('idSelectAno', anos, (ano) => ({ value: ano, text: ano }));
+    criarSelect('idSelectMes', meses, (mes, indice) => ({
+        value: (indice + 1).toString(),
+        text: mes
+    }));
+}
+function criarSelect(containerId, dados, mapearOption) {
+    const container = document.getElementById(containerId);
+    if (!container)
+        return;
+    const select = document.createElement('select');
+    select.className = 'bg-blue-500 border-none rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-300';
+    if (containerId == 'idSelectAno') {
+        select.setAttribute('id', 'selectIdAno');
+    }
+    else {
+        select.setAttribute('id', 'selectIdMes');
+    }
+    dados.forEach((item, index) => {
+        const { value, text } = mapearOption(item, index);
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = text;
+        select.appendChild(option);
+    });
+    container.appendChild(select);
+}
 function getValorClass(valor) {
     if (valor === undefined)
         return 'table-cell empty-cell';
@@ -114,7 +139,7 @@ async function construirCabecalho(mes, ano) {
         <table class="w-full border-collapse rounded-lg shadow-sm">
             <thead>
                 <tr>
-                    <th colspan="${(n_contas + 1) * 2}" class="table-cell table-header text-center text-xl p-3">${mes.toUpperCase()} ${ano}</th>
+                    <th colspan="${(n_contas + 1) * 2}" class="table-cell table-header text-center text-xl p-3">${mes}/${ano}</th>
                 </tr>
 
                 <tr class="table-header">

@@ -27,7 +27,6 @@ function cadastrarCategoria()
             'id'     => $result
         ]
     );
-    exit;
 }
 
 function listarCategorias() 
@@ -49,7 +48,6 @@ function listarCategorias()
             'ret'    => $result
         ]
     );
-    exit;
 }
 
 function listarContas()
@@ -71,7 +69,6 @@ function listarContas()
             'ret'    => $result
         ]
     );
-    exit;
 }
 
 function cadastrarConta() 
@@ -100,7 +97,6 @@ function cadastrarConta()
             'id'     => $result
         ]
     );
-    exit;
 }
 
 function cadastrarMovimento() 
@@ -130,19 +126,22 @@ function cadastrarMovimento()
             'id'     => $result
         ]
     );
-    exit;
 }
 
-function listarMovMensal() 
+function listarMovMensal(string $mes, string|int $ano) 
 {
     $query = 'SELECT `movimentos`.*, `categorias`.`descricao` AS descCat, CONCAT(`contas_correntes`.`nomeBanco`, " - ", `contas_correntes`.`nomeConta`) AS descConta
         FROM `movimentos` 
         INNER JOIN `categorias` ON `movimentos`.`idCategoria` = `categorias`.`idCategoria` 
         INNER JOIN `contas_correntes` ON `movimentos`.`idContaCorrente` = `contas_correntes`.`idContaCorrente`
+        WHERE MONTH(`movimentos`.`dataMov`) = :mes AND YEAR(`movimentos`.`dataMov`) = :ano
         ORDER BY  `movimentos`.`dataMov` ASC, `movimentos`.`idContaCorrente` ASC, `movimentos`.`idMovimento` ASC';
 
     $bd = (new ConfigConnection())->getConnection();
     $stmt = $bd->prepare($query);
+
+    $stmt->bindValue(':mes', $mes, PDO::PARAM_STR);
+    $stmt->bindValue(':ano', $ano, PDO::PARAM_STR);
 
     $stmt->execute();
     $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -160,7 +159,6 @@ function listarMovMensal()
             'ret'    => $ret ?? []
         ]
     );
-    exit;
 }
 
 function listarSaldosIniciais()
@@ -182,7 +180,6 @@ function listarSaldosIniciais()
             'ret'    => $result
         ]
     );
-    exit;
 }
 
 ?>

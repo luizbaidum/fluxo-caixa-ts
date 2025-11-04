@@ -7,9 +7,18 @@
 </head>
 <body class="bg-gray-50 p-0 m-0 w-full h-full">
     <div class="bg-blue-400">
-        <nav class="flex px-4 border-b md:shadow-lg items-center relative">
+        <nav class="flex flex-wrap px-4 border-b md:shadow-lg items-center relative">
             <div class="text-lg font-bold md:py-0 py-4 text-white solicitar-pagina">
                 Home
+            </div>
+            <div class="flex-1 flex justify-center">
+                <div class="flex space-x-2">
+                    <div id="idSelectAno"></div>
+                    <div id="idSelectMes"></div>
+                    <button type="button" class="submit-yeayr-month bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-lg px-4 py-2 transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 shadow-md hover:shadow-lg">
+                        Buscar
+                    </button>
+                </div>
             </div>
             <ul class="md:px-2 ml-auto md:flex md:space-x-2 absolute md:relative top-full left-0 right-0">
                 <li class="relative parent">
@@ -44,182 +53,19 @@
 
     <div id="content" class="flex items-center justify-center w-full">
         <div class="w-full h-full overflow-x-auto bg-white p-4" id="movimentos-mensais">
-            <table class="w-full border-collapse rounded-lg shadow-sm">
-                <tr>
-                    <th colspan="7" class="table-cell table-header text-center text-xl p-3">JANEIRO 2025</th>
-                </tr>
-
-                <tr class="table-header">
-                    <th rowspan="2" class="table-cell text-left">Data</th>
-                    <th colspan="2" class="table-cell text-center">STD</th>
-                    <th colspan="2" class="table-cell text-center">Banco do Brasil</th>
-                    <th colspan="2" class="table-cell text-center">Caixa Econômica</th>
-                </tr>
-
-                <tr class="table-subheader">
-                    <th class="table-cell">Valor</th>
-                    <th class="table-cell">Descrição</th>
-
-                    <th class="table-cell">Valor</th>
-                    <th class="table-cell">Descrição</th>
-
-                    <th class="table-cell">Valor</th>
-                    <th class="table-cell">Descrição</th>
-                </tr>
-
-                <tr class="bg-gray-100 font-bold">
-                    <td class="table-cell">Saldo Inicial</td>
-
-                    <td class="table-cell">110,752.27</td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell">2,433.94</td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell">27,788.08</td>
-                    <td class="table-cell empty-cell"></td>
-                </tr>
-
-                <tr class="row-alternate">
-                    <td class="table-cell date-cell">01/01/2025</td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell">Feriado - Ano Novo</td>
-                </tr>
-
-                <tr>
-                    <td class="table-cell date-cell">02/01/2025</td>
-
-                    <td class="table-cell text-red-600">-2.15</td>
-                    <td class="table-cell">Aplicação IRPJ+CSLL</td>
-
-                    <td class="table-cell text-red-600">-6,245.37</td>
-                    <td class="table-cell">Empréstimo Pronampe</td>
-
-                    <td class="table-cell text-red-600">-27,000.00</td>
-                    <td class="table-cell">Aplicação reserva</td>
-                </tr>
-
-                <tr class="row-alternate">
-                    <td class="table-cell date-cell">02/01/2025</td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell">3,434.95</td>
-                    <td class="table-cell">Recebimento RM</td>
-
-                    <td class="table-cell">653.91</td>
-                    <td class="table-cell">ND Malosso</td>
-                </tr>
-
-                <tr>
-                    <td class="table-cell date-cell">02/01/2025</td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell">8,445.35</td>
-                    <td class="table-cell">NF ULLIAN</td>
-
-                    <td class="table-cell">627.37</td>
-                    <td class="table-cell">ND Malosso</td>
-                </tr>
-
-                <tr class="row-alternate">
-                    <td class="table-cell date-cell">03/01/2025</td>
-
-                    <td class="table-cell">3,427.00</td>
-                    <td class="table-cell">NF TERRANUTS</td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell">644.83</td>
-                    <td class="table-cell">ND Malosso</td>
-                </tr>
-
-                <tr>
-                    <td class="table-cell date-cell">03/01/2025</td>
-
-                    <td class="table-cell text-red-600">-4,478.88</td>
-                    <td class="table-cell">Localiza</td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell empty-cell"></td>
-                </tr>
-
-                <tr class="row-alternate">
-                    <td class="table-cell date-cell">03/01/2025</td>
-
-                    <td class="table-cell text-red-600">-1,960.56</td>
-                    <td class="table-cell">RDs + TEDs</td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell empty-cell"></td>
-                </tr>
-
-                <tr>
-                    <td class="table-cell date-cell">03/01/2025</td>
-
-                    <td class="table-cell">26,822.49</td>
-                    <td class="table-cell">NF US Cucaú</td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell empty-cell"></td>
-                    <td class="table-cell empty-cell"></td>
-                </tr>
-
-                <tr class="summary-row">
-                    <td class="table-cell">Subtotal Semana 1</td>
-
-                    <td class="table-cell">134,559.17</td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell">8,068.87</td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell">1,714.19</td>
-                    <td class="table-cell empty-cell"></td>
-                </tr>
-
-                <tr class="final-balance">
-                    <td class="table-cell">Saldo Final Janeiro</td>
-
-                    <td class="table-cell">200,097.15</td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell">4,854.81</td>
-                    <td class="table-cell empty-cell"></td>
-
-                    <td class="table-cell">27,376.27</td>
-                    <td class="table-cell empty-cell"></td>
-                </tr>
-            </table>
         </div>
     </div>
 </body>
 
+<script src="days-months-years.js"></script>
 <script src="formatting-functions.js"></script>
 <script src="creating-table.js"></script>
 <script src="interfaces.js"></script>
 <script src="src.js"></script>
 
 <script>
+    criarSelects();
+
     setTimeout(() => {
         montarGridIndex()
     }, 700)

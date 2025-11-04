@@ -1,6 +1,10 @@
 "use strict";
+var _a;
 const url_base = window.location.origin;
 const class_require_ajax = document.getElementsByClassName('solicitar-pagina');
+const currentDate = new Date();
+const actual_year = currentDate.getFullYear().toString();
+const actual_month = (currentDate.getMonth() + 1).toString();
 if (class_require_ajax.length == 0) {
     alert('Por favor atualizar a página. Entrar em contato com o suporte se este erro persistir.');
     console.error('Não existem classes com o nome "solicitar-pagina" para ação.');
@@ -102,8 +106,11 @@ class Ler {
         }
         return [];
     }
-    async listarMovMensal() {
-        let ret_json = await solicitarApi(this.url_leitura);
+    async listarMovMensal(mes, ano) {
+        let form_data = new FormData();
+        form_data.set('mes', mes);
+        form_data.set('ano', ano);
+        let ret_json = await solicitarApi(this.url_leitura, form_data);
         if (ret_json.status) {
             return ret_json.ret;
         }
@@ -143,54 +150,18 @@ async function criarSelectContas() {
         }
     }
 }
-async function montarGridIndex() {
+async function montarGridIndex(month = actual_month, year = actual_year) {
     let local = document.querySelector('#movimentos-mensais');
     if (local) {
         let ler = new Ler('list_mov_m');
-        let mov_m = await ler.listarMovMensal();
-        let movimentos_montar = await prepararConteudo(mov_m);
-        let table = await gerarTabela('janeiro', '2025', movimentos_montar);
+        let movimentos_montar = await ler.listarMovMensal(month, year);
+        let table = await gerarTabela(month, year, movimentos_montar);
         local.innerHTML = table;
     }
 }
-async function prepararConteudo(original) {
-    let aux = {};
-    let contador = {};
-    let controle_id = 0;
-    let arr_chave_data = [];
-    return original;
-    // for (let chave_data in original) {
-    //     arr_chave_data.push(chave_data);
-    // }
-    // let ler: Ler = new Ler('list_cc');
-    // let cc: CC[] = await ler.listarContas();
-    // let id_cc_only: number[] = cc.map(conta => conta.idContaCorrente);
-    // console.log(id_cc_only);
-    // for (const dia of arr_chave_data) {
-    //     for (const id_cc of id_cc_only) {
-    //         let chave: string = dia + '&&' + id_cc;
-    //         let diferenca: number = 0;
-    //         let objeto_vazio: listaMovimentoMensal = {
-    //                             idMovimento: 0,
-    //                             valor: 0,
-    //                             data: dia,
-    //                             idCategoria: 0,
-    //                             idContaCorrente: id_cc,
-    //                             descCC: '',
-    //                             descCat: ''
-    //                         };
-    //         if (aux[chave]) {
-    //             if (aux[chave].length != contador[dia]) {
-    //                 diferenca = contador[dia] - aux[chave].length;
-    //                 for (let i = 0; i < diferenca; i++) {
-    //                     aux[chave].push(objeto_vazio);
-    //                 }
-    //             }
-    //         } else {
-    //             aux[chave] = [objeto_vazio];
-    //         }
-    //     }
-    // }
-    // return {};
-    // return aux;
-}
+(_a = document.querySelector('.submit-yeayr-month')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', function () {
+    var _a, _b;
+    let month = (_a = document.getElementById('selectIdMes')) === null || _a === void 0 ? void 0 : _a.value;
+    let year = (_b = document.getElementById('selectIdAno')) === null || _b === void 0 ? void 0 : _b.value;
+    montarGridIndex(month, year);
+});
