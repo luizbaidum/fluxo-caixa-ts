@@ -30,6 +30,23 @@ class Formatations {
             console.error('Error -> ' + e);
         }
     }
+
+    converterDataParaBrasileiro(data: string) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(data)) {
+            throw new Error('Formato de data inválido. Use yyyy-mm-dd');
+        }
+
+        // Divide a string usando o hífen como separador
+        const partes = data.split('-');
+
+        // Extrai ano, mês e dia
+        const ano = partes[0];
+        const mes = partes[1];
+        const dia = partes[2];
+
+        // Retorna no formato dd/mm/yyyy
+        return `${dia}/${mes}/${ano}`;
+    }
 }
 
 document.addEventListener('keyup', (e: Event) => {

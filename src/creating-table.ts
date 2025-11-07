@@ -57,7 +57,6 @@ async function gerarTabela(mes: string, ano: string, movimentos: ListaMovimentoM
 
     todos_dias_mes.forEach(function(dia) {
         if (movimentos[dia]) {
-            let linha_extra: string = '';
             let hasMultiplasLinhas = false;
             let movimentosPorConta: any[] = [];
 
@@ -89,7 +88,7 @@ async function gerarTabela(mes: string, ano: string, movimentos: ListaMovimentoM
 
                     // Data apenas na primeira linha
                     if (linhaIndex === 0) {
-                        table += `<td class="table-cell date-cell" rowspan="${maxLinhas}">${dia}</td>`;
+                        table += `<td class="table-cell date-cell" rowspan="${maxLinhas}">${formatacao.converterDataParaBrasileiro(dia)}</td>`;
                     }
 
                     // Para cada conta
@@ -123,7 +122,7 @@ async function gerarTabela(mes: string, ano: string, movimentos: ListaMovimentoM
             } else {
                 // Apenas uma linha por dia
                 table += `<tr class="">`;
-                table += `<td class="table-cell date-cell">${dia}</td>`;
+                table += `<td class="table-cell date-cell">${formatacao.converterDataParaBrasileiro(dia)}</td>`;
 
                 for (let id_cc of contas) {
                     if (movimentos[dia][id_cc]) {
@@ -162,19 +161,21 @@ async function construirCabecalho(mes: string, ano: string): Promise<[string, nu
                 </tr>
 
                 <tr class="table-header">
-                    <th rowspan="3" class="table-cell text-left">Data</th>`;
+                    <th class="table-cell text-left"></th>`;
 
     for (const conta of contas) {
         cabecalho += `<th colspan="2" class="table-cell text-center">${conta.nomeBanco}</th>`
     }
 
     cabecalho += `</tr>
-                <tr class="table-subheader">`;
+                  <tr class="table-subheader">
+                    <th class="table-cell text-left table-header">Saldo inicial</th>`;
 
     cabecalho += await construirSaldosIniciais();
 
     cabecalho += `</tr>
-                <tr class="table-subheader">`;
+                <tr class="table-subheader">
+                    <th class="table-cell text-left table-header">Data</th>`;
 
     for (let i = 0; i < n_contas; i++) {
         cabecalho += `<th class="table-cell">Valor</th>
@@ -190,11 +191,12 @@ async function construirCabecalho(mes: string, ano: string): Promise<[string, nu
 async function construirSaldosIniciais(): Promise<string> {
     let ler_s_i = new Ler('list_s_i');
     let saldos: SaldoInicial[] = await ler_s_i.listarSaldoInicial();
+    let formatacao = new Formatations();
 
     let html_saldos: string = '';
 
     for (const s of saldos) {
-        html_saldos += `<th colspan="2" class="table-cell text-center">${s.saldoInicial}</th>`
+        html_saldos += `<th colspan="2" class="table-cell text-center">${formatacao.convertToBR(s.saldoInicial)}</th>`
     }
 
     return html_saldos;
